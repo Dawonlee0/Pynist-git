@@ -20,13 +20,13 @@ def open_stage_window():
     stage_label.pack()
 
     # 스테이지 버튼 생성
-    button1 = Button(stage_window, text="1번")
+    button1 = Button(stage_window, text="약초1")
     button1.pack(side="left", padx=10, pady=10)
-    button2 = Button(stage_window, text="2번")
+    button2 = Button(stage_window, text="약초2")
     button2.pack(side="left", padx=10, pady=10)
-    button3 = Button(stage_window, text="3번")
+    button3 = Button(stage_window, text="약초3")
     button3.pack(side="left", padx=10, pady=10)
-    button4 = Button(stage_window, text="4번")
+    button4 = Button(stage_window, text="약초4")
     button4.pack(side="left", padx=10, pady=10)
 
     def back_to_main():
@@ -51,6 +51,7 @@ def open_story_window():
     # 스토리 설명 텍스트 입력 공간 생성
     story_text = Text(story_window, width=50, height=10)
     story_text.pack(pady=10)
+    story_text.insert("3.0", "어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.")  # 초기 내용 입력
 
     def back_to_main():
         # 이전으로 돌아가기
@@ -74,6 +75,7 @@ def open_desc_window():
     # 게임 설명 텍스트 입력 공간 생성
     desc_text = Text(desc_window, width=50, height=10)
     desc_text.pack(pady=10)
+    desc_text.insert("1.0", "게임에 대한 설명을 입력하세요.")  # 초기 내용 입력
     
     # 이전으로 돌아가기
     def back_to_main():

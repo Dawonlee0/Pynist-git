@@ -2,14 +2,17 @@ from tkinter import *
 import random
 
 def on_key_press(event):
-    if event.keysym == "Up":
+    if event.keysym == "Up" and not monster_turn_active():
         canvas.move(user, 0, -10)
-    elif event.keysym == "Down":
+    elif event.keysym == "Down" and not monster_turn_active():
         canvas.move(user, 0, 10)
-    elif event.keysym == "Left":
+    elif event.keysym == "Left" and not monster_turn_active():
         canvas.move(user, -10, 0)
-    elif event.keysym == "Right":
+    elif event.keysym == "Right" and not monster_turn_active():
         canvas.move(user, 10, 0)
+
+def monster_turn_active():
+    return attack_button["state"] == DISABLED
 
 def move_bullets():
     bullets_to_remove = []
@@ -37,8 +40,47 @@ def game_over():
     canvas.unbind("<KeyPress>")
     canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
 
+def monster_turn():
+    canvas.bind("<KeyPress>", on_key_press)
+    shoot_bullets(0)  # 총알 여러 개 발사
+
+def shoot_bullets(count):
+    if count >= 10:  # !!!!!총알을 10개 발사하면 종료
+        end_monster_turn()
+        return
+
+    shoot_bullet()
+    root.after(2000, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
+
+def end_monster_turn():
+    remove_bullets()
+def remove_bullets():
+    for bullet in bullets.copy():
+        canvas.delete(bullet)
+        bullets.pop(bullet)
+
+def user_attack():
+    monster_health.set(monster_health.get() - 1)
+    if monster_health.get() <= 0:
+        game_over()
+    else:
+        monster_turn()
+
+def user_heal():
+    user_health.set(user_health.get() + 1)
+    monster_turn()
+
+def user_surrender():
+    game_over()
+
+def user_turn():
+    canvas.bind("<KeyPress>", on_key_press)
+    attack_button.config(state=NORMAL)
+    heal_button.config(state=NORMAL)
+    surrender_button.config(state=NORMAL)
+
 root = Tk()
-root.title("Bullet Hell Game")
+root.title("게임이다")
 
 canvas = Canvas(root, width=400, height=400)
 canvas.pack()
@@ -67,23 +109,17 @@ user_health_label.pack()
 user_health_value = Label(root, textvariable=user_health)
 user_health_value.pack()
 
-attack_button = Button(root, text="Attack", command=shoot_bullet)
+attack_button = Button(root, text="Attack", command=user_attack, state=DISABLED)
 attack_button.pack()
 
-heal_button = Button(root, text="Heal", command=None)  # Add your heal function here
+heal_button = Button(root, text="Heal", command=user_heal, state=DISABLED)
 heal_button.pack()
 
-surrender_button = Button(root, text="Surrender", command=game_over)
+surrender_button = Button(root, text="Surrender", command=user_surrender, state=DISABLED)
 surrender_button.pack()
-
-shoot_bullet()  # Initial bullet
 
 root.after(1000, move_bullets)  # Bullet movement
 
-def generate_bullets():
-    shoot_bullet()
-    root.after(1000, generate_bullets)  # Bullet generation interval
-
-root.after(1000, generate_bullets)  # Initial bullet generation
+user_turn()  # Start the first turn
 
 root.mainloop()
