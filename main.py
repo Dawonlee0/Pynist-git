@@ -1,5 +1,6 @@
 from tkinter import *
-
+from game1 import game2
+import random
 
 # 메인 창 생성
 main_window = Tk()
@@ -10,6 +11,7 @@ title_label = Label(main_window, text="게임", font=("Arial", 30))
 title_label.pack()
 
 def open_stage_window():
+    global stage_window
     # 스테이지 선택 창 열기
     main_window.withdraw()  # 메인 창 숨기기
     stage_window = Tk()
@@ -19,8 +21,11 @@ def open_stage_window():
     stage_label = Label(stage_window, text="스테이지 선택", font=("Arial", 30))
     stage_label.pack()
 
-    # 스테이지 버튼 생성
-    button1 = Button(stage_window, text="약초1")
+    def open_game1():
+        stage_window.destroy()  # 스테이지 선택 창 닫기
+        game2() # game2 함수 실행
+
+    button1 = Button(stage_window, text="약초1", command=game2)
     button1.pack(side="left", padx=10, pady=10)
     button2 = Button(stage_window, text="약초2")
     button2.pack(side="left", padx=10, pady=10)
@@ -28,7 +33,7 @@ def open_stage_window():
     button3.pack(side="left", padx=10, pady=10)
     button4 = Button(stage_window, text="약초4")
     button4.pack(side="left", padx=10, pady=10)
-
+    
     def back_to_main():
         # 이전으로 돌아가기
         stage_window.destroy()  # 스테이지 선택 창 닫기
@@ -52,7 +57,7 @@ def open_story_window():
     story_text = Text(story_window, width=50, height=10)
     story_text.pack(pady=10)
     story_text.insert("3.0", "어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.")  # 초기 내용 입력
-
+    
     def back_to_main():
         # 이전으로 돌아가기
         story_window.destroy()  # 스토리 설명 창 닫기

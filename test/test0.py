@@ -38,7 +38,10 @@ def shoot_bullet():
 
 def game_over():
     canvas.unbind("<KeyPress>")
-    canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
+    if monster_health.get() <= 0:
+        canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
+    else:
+        canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
 
 def monster_turn():
     canvas.bind("<KeyPress>", on_key_press)
@@ -83,6 +86,9 @@ def user_turn():
 root = Tk()
 root.title("게임이다")
 
+image_label = Label(root)  # 몬스터 이미지를 표시할 Label 위젯 생성
+image_label.pack()
+
 canvas = Canvas(root, width=400, height=400)
 canvas.pack()
 canvas.bind("<KeyPress>", on_key_press)
@@ -119,11 +125,9 @@ heal_button.pack()
 surrender_button = Button(root, text="Surrender", command=user_surrender, state=DISABLED)
 surrender_button.pack()
 
-image_label = Label(root)  # 이미지를 표시할 Label 위젯 생성
-image_label.pack()
-
 def load_image():
     image = PhotoImage(file="1.png")  # 이미지 파일 경로에 맞게 수정
+    image = image.subsample(4)  # 이미지를 1/2로 축소
     image_label.config(image=image)
     image_label.image = image
 
