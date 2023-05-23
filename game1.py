@@ -3,14 +3,14 @@ import random
 
 def game2():
     def on_key_press(event):
-        if event.keysym == "Up" and not monster_turn_active():
-            canvas.move(user, 0, -10)
-        elif event.keysym == "Down" and not monster_turn_active():
-            canvas.move(user, 0, 10)
-        elif event.keysym == "Left" and not monster_turn_active():
-            canvas.move(user, -10, 0)
-        elif event.keysym == "Right" and not monster_turn_active():
-            canvas.move(user, 10, 0)
+                    if event.keysym == "Up" and not monster_turn_active():
+                     canvas.move(user, 0, -10)
+                    elif event.keysym == "Down" and not monster_turn_active():
+                        canvas.move(user, 0, 10)
+                    elif event.keysym == "Left" and not monster_turn_active():
+                        canvas.move(user, -10, 0)
+                    elif event.keysym == "Right" and not monster_turn_active():
+                        canvas.move(user, 10, 0)
 
     def monster_turn_active():
         return attack_button["state"] == DISABLED
@@ -45,6 +45,7 @@ def game2():
             canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
 
     def monster_turn():
+        remove_battleUi()
         # canvas.bind("<KeyPress>", on_key_press)
         shoot_bullets(0)  # 총알 여러 개 발사
 
@@ -58,12 +59,28 @@ def game2():
 
     def end_monster_turn():
         remove_bullets()
+        recover_battleUi()
+        remove_canvas()
 
     def remove_bullets():
         for bullet in bullets.copy():
             canvas.delete(bullet)
             bullets.pop(bullet)
 
+    def remove_battleUi():
+        surrender_button.pack_forget()
+        attack_button.pack_forget()
+        heal_button.pack_forget()
+
+    def recover_battleUi():
+        attack_button.pack()
+        heal_button.pack()
+        surrender_button.pack()
+
+    def remove_canvas():
+        canvas.pack_forget()
+        user.pack_forget()
+    
     def user_attack():
         monster_health.set(monster_health.get() - 1)
         if monster_health.get() <= 0:
@@ -86,6 +103,11 @@ def game2():
 
     root = Tk()
     root.title("게임이다")
+    scw = root.winfo_screenwidth()
+    sch = root.winfo_screenheight()
+    x = (scw - 800)/2
+    y = (sch - 800)/2
+    root.geometry('%dx%d+%d+%d' % (800, 800, x, y))
 
     image_label = Label(root)  # 몬스터 이미지를 표시할 Label 위젯 생성
     image_label.pack()

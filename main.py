@@ -3,8 +3,14 @@ from game1 import game2
 import random
 
 # 메인 창 생성
+
 main_window = Tk()
+scw = main_window.winfo_screenwidth()
+sch = main_window.winfo_screenheight()
+x = (scw - 800)/2
+y = (sch - 450)/2
 main_window.title("게임")
+main_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
 # 제목 라벨 생성
 title_label = Label(main_window, text="게임", font=("Arial", 30))
@@ -16,6 +22,7 @@ def open_stage_window():
     main_window.withdraw()  # 메인 창 숨기기
     stage_window = Tk()
     stage_window.title("스테이지 선택")
+    stage_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
     # 스테이지 선택 라벨 생성
     stage_label = Label(stage_window, text="스테이지 선택", font=("Arial", 30))
@@ -26,13 +33,13 @@ def open_stage_window():
         game2() # game2 함수 실행
 
     button1 = Button(stage_window, text="약초1", command=game2)
-    button1.pack(side="left", padx=10, pady=10)
+    button1.pack(side="left", padx=30, pady=10)
     button2 = Button(stage_window, text="약초2")
-    button2.pack(side="left", padx=10, pady=10)
+    button2.pack(side="left", padx=30, pady=10)
     button3 = Button(stage_window, text="약초3")
-    button3.pack(side="left", padx=10, pady=10)
+    button3.pack(side="left", padx=30, pady=10)
     button4 = Button(stage_window, text="약초4")
-    button4.pack(side="left", padx=10, pady=10)
+    button4.pack(side="left", padx=30, pady=10)
     
     def back_to_main():
         # 이전으로 돌아가기
@@ -41,7 +48,7 @@ def open_stage_window():
 
     # 이전으로 돌아가는 버튼 생성
     back_button = Button(stage_window, text="이전", command=back_to_main)
-    back_button.pack(pady=10)
+    back_button.pack(side="left", padx=30)
 
 def open_story_window():
     # 스토리 설명 창 열기
@@ -98,10 +105,10 @@ desc_button = Button(main_window, text="게임 설명", command=open_desc_window
 quit_button = Button(main_window, text="끝내기", command=main_window.destroy)
 
 # 버튼 일자로 배치
-start_button.pack(side="left", padx=10, pady=10)
-story_button.pack(side="left", padx=10, pady=10)
-desc_button.pack(side="left", padx=10, pady=10)
-quit_button.pack(side="left", padx=10, pady=10)
+quit_button.pack(side="bottom", padx=10, pady=10)
+desc_button.pack(side="bottom", padx=10, pady=10)
+story_button.pack(side="bottom", padx=10, pady=10)
+start_button.pack(side="bottom", padx=10, pady=10)
 
 main_window.mainloop()
 
