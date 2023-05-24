@@ -124,10 +124,10 @@ def game2():
 
     bullets = {}
 
-    monster_health = IntVar()
+    monster_health = IntVar(root)
     monster_health.set(10)
 
-    user_health = IntVar()
+    user_health = IntVar(root)
     user_health.set(10)
 
     monster_health_label = Label(root, text="Monster Health:")
