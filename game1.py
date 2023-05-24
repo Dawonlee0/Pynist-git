@@ -45,6 +45,7 @@ def game2():
             canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
 
     def monster_turn():
+        recover_canvas()
         remove_battleUi()
         # canvas.bind("<KeyPress>", on_key_press)
         shoot_bullets(0)  # 총알 여러 개 발사
@@ -79,7 +80,9 @@ def game2():
 
     def remove_canvas():
         canvas.pack_forget()
-        user.pack_forget()
+
+    def recover_canvas():
+        canvas.pack()
     
     def user_attack():
         monster_health.set(monster_health.get() - 1)
@@ -148,11 +151,14 @@ def game2():
     surrender_button = Button(root, text="Surrender", command=user_surrender, state=DISABLED)
     surrender_button.pack()
 
+    remove_canvas()
+
     def load_image():
-        image = PhotoImage(file="1.png")  # 이미지 파일 경로에 맞게 수정
+        image = PhotoImage(file="1.png",master=root)  # 이미지 파일 경로에 맞게 수정
         image = image.subsample(4)  # 이미지를 1/2로 축소
         image_label.config(image=image)
         image_label.image = image
+
 
     load_image()  # 이미지 로드
 
