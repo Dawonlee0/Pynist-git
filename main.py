@@ -1,5 +1,5 @@
 from tkinter import *
-from game1 import game2
+from game1 import stage1
 import random
 
 # 메인 창 생성
@@ -30,9 +30,9 @@ def open_stage_window():
 
     def open_game1():
         stage_window.destroy()  # 스테이지 선택 창 닫기
-        game2() # game2 함수 실행
+        stage1() # stage1 함수 실행
 
-    button1 = Button(stage_window, text="약초1", command=game2)
+    button1 = Button(stage_window, text="약초1", command=stage1)
     button1.pack(side="left", padx=30, pady=10)
     button2 = Button(stage_window, text="약초2")
     button2.pack(side="left", padx=30, pady=10)

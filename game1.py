@@ -1,7 +1,7 @@
 from tkinter import *
 import random
 
-def game2():
+def stage1():
     def on_key_press(event):
                     if event.keysym == "Up" and not monster_turn_active():
                      canvas.move(user, 0, -10)
@@ -177,6 +177,6 @@ def game2():
     root.mainloop()
 
 if __name__ == "__main__":
-    game2()
+    stage1()
 
 # game2()
