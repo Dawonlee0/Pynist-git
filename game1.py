@@ -15,13 +15,15 @@ def game2():
     def monster_turn_active():
         return attack_button["state"] == DISABLED
 
+    
     def move_bullets():
         bullets_to_remove = []
         for bullet in bullets:
             canvas.move(bullet, bullets[bullet][0], bullets[bullet][1])
-            bullet_coords = canvas.coords(bullet)
+            bullet_coords = canvas.coords(bullet)            
             if bullet_coords[2] >= canvas.coords(user)[0] and bullet_coords[0] <= canvas.coords(user)[2] and bullet_coords[3] >= canvas.coords(user)[1] and bullet_coords[1] <= canvas.coords(user)[3]:
                 user_health.set(user_health.get() - 1)
+                bullets_to_remove.append(bullet)
                 if user_health.get() <= 0:
                     game_over()
             if bullet_coords[3] >= 400:
@@ -158,7 +160,6 @@ def game2():
         image = image.subsample(4)  # 이미지를 1/2로 축소
         image_label.config(image=image)
         image_label.image = image
-
 
     load_image()  # 이미지 로드
 
