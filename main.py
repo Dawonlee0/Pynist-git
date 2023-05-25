@@ -55,6 +55,7 @@ def open_story_window():
     main_window.withdraw()  # 메인 창 숨기기
     story_window = Tk()
     story_window.title("스토리 설명")
+    story_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
     # 스토리 설명 라벨 생성
     story_label = Label(story_window, text="스토리 설명", font=("Arial", 30))
@@ -79,6 +80,7 @@ def open_desc_window():
     main_window.withdraw()  # 메인 창 숨기기
     desc_window = Tk()
     desc_window.title("게임 설명")
+    desc_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
     # 게임 설명 라벨 생성
     desc_label = Label(desc_window, text="게임 설명", font=("Arial", 30))
