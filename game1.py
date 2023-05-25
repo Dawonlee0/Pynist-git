@@ -22,7 +22,7 @@ def game2():
             canvas.move(bullet, bullets[bullet][0], bullets[bullet][1])
             bullet_coords = canvas.coords(bullet)            
             if bullet_coords[2] >= canvas.coords(user)[0] and bullet_coords[0] <= canvas.coords(user)[2] and bullet_coords[3] >= canvas.coords(user)[1] and bullet_coords[1] <= canvas.coords(user)[3]:
-                user_health.set(user_health.get() - 1)
+                user_health.set(user_health.get() - 10)
                 bullets_to_remove.append(bullet)
                 if user_health.get() <= 0:
                     game_over()
@@ -37,12 +37,13 @@ def game2():
         x = random.randint(0, 380)
         y = 0
         bullet = canvas.create_rectangle(x, y, x + 20, y + 20, fill="red")
-        bullets[bullet] = (0, 5)
+        bullets[bullet] = (0, 7.5)
 
     def game_over():
         canvas.unbind("<KeyPress>")
         if monster_health.get() <= 0:
             canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
+
         else:
             canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
 
@@ -53,12 +54,12 @@ def game2():
         shoot_bullets(0)  # 총알 여러 개 발사
 
     def shoot_bullets(count):
-        if count >= 10:  # !!!!!총알을 10개 발사하면 종료
+        if count >= 15:  # !!!!!총알을 10개 발사하면 종료
             end_monster_turn()
             return
 
         shoot_bullet()
-        root.after(2000, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
+        root.after(1200, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
 
     def end_monster_turn():
         remove_bullets()
@@ -87,15 +88,21 @@ def game2():
         canvas.pack()
     
     def user_attack():
-        monster_health.set(monster_health.get() - 1)
+        monster_health.set(monster_health.get() - 20)
         if monster_health.get() <= 0:
             game_over()
         else:
             monster_turn()
 
     def user_heal():
-        user_health.set(user_health.get() + 1)
-        monster_turn()
+        if user_health.get() == 100:
+            #체력이 이미 다 찼다는 문구 출력
+            user_turn()
+        else:
+           user_health.set(user_health.get() + 10)
+           if user_health.get() > 100:
+                    user_health.set(100)
+           monster_turn()
 
     def user_surrender():
         game_over()
@@ -122,15 +129,15 @@ def game2():
     canvas.bind("<KeyPress>", on_key_press)
     canvas.focus_set()
 
-    user = canvas.create_rectangle(180, 350, 220, 390, fill="blue")
+    user = canvas.create_rectangle(185, 355, 215, 385, fill="blue")
 
     bullets = {}
 
     monster_health = IntVar(root)
-    monster_health.set(10)
+    monster_health.set(100)
 
     user_health = IntVar(root)
-    user_health.set(10)
+    user_health.set(100)
 
     monster_health_label = Label(root, text="Monster Health:")
     monster_health_label.pack()
