@@ -1,8 +1,13 @@
 from tkinter import *
 import random
+import subprocess
 
-def stage1():
+def stage2():
     # 사용자가 방향키를 입력받는 함수
+    def open_main():
+        subprocess.Popen(["python", "main.py"])
+        root.destroy()  # Tkinter 창 닫기
+
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
         if event.keysym == "Up" and not monster_turn_active():
@@ -185,6 +190,9 @@ def stage1():
     surrender_button = Button(root, text="Surrender", command=user_surrender, state=DISABLED)
     surrender_button.pack()
 
+    button1 = Button(root, text="메인화면", command=open_main)
+    button1.pack()
+
     remove_canvas()
 
     def load_image():
@@ -200,6 +208,6 @@ def stage1():
     root.mainloop()
 
 if __name__ == "__main__":
-    stage1()
+    stage2()
 
 # game2()
