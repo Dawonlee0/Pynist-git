@@ -3,11 +3,11 @@ import random
 import subprocess
 
 def stage2():
-    # 사용자가 방향키를 입력받는 함수
+    # main 파일 실행 함수
     def open_main():
         subprocess.Popen(["python", "main.py"])
         root.destroy()  # Tkinter 창 닫기
-
+    # 사용자가 방향키를 입력받는 함수
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
         if event.keysym == "Up" and not monster_turn_active():
