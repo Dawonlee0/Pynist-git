@@ -2,13 +2,12 @@ from tkinter import *
 import random
 import subprocess
 
-def stage1():
-    # main 파일 실행 함수
+def stage2():
+    # 사용자가 방향키를 입력받는 함수
     def open_main():
         subprocess.Popen(["python", "main.py"])
         root.destroy()  # Tkinter 창 닫기
-    
-    # 사용자가 방향키를 입력받는 함수
+
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
         if event.keysym == "Up" and not monster_turn_active():
@@ -22,38 +21,42 @@ def stage1():
 
     # 몬스터의 턴 여부를 확인하는 함수
     def monster_turn_active():
-        return attack_button["state"] == DISABLED
-
-    # 총알을 이동시키는 함수
-    def move_bullets():
-        bullets_to_remove = []  # 삭제할 총알 목록
-        for bullet in bullets:
-            canvas.move(bullet, bullets[bullet][0], bullets[bullet][1])  # 총알 이동
-            bullet_coords = canvas.coords(bullet)  # 총알 좌표 확인
-
-            # 사용자와 총알 충돌 확인
-            if bullet_coords[2] >= canvas.coords(user)[0] and bullet_coords[0] <= canvas.coords(user)[2] and bullet_coords[3] >= canvas.coords(user)[1] and bullet_coords[1] <= canvas.coords(user)[3]:
-                user_health.set(user_health.get() - 10)  # 사용자 체력 감소
-                bullets_to_remove.append(bullet)  # 충돌한 총알 추가
-                if user_health.get() <= 0:
-                    game_over()  # 사용자 체력이 0 이하이면 게임 오버
-
-            # 총알이 화면 밖으로 벗어나면 삭제
-            if bullet_coords[3] >= 400:
-                bullets_to_remove.append(bullet)  # 범위를 벗어난 총알 추가
-
-        # 삭제할 총알들을 제거하고 새로운 총알 이동을 위해 재귀적으로 호출
-        for bullet in bullets_to_remove:
-            canvas.delete(bullet)
-            bullets.pop(bullet)
-        root.after(50, move_bullets)
+        return attack_button["state"] == DISABLED  
 
     # 총알을 발사하는 함수
     def shoot_bullet():
-        x = random.randint(0, 380)  # x 좌표 랜덤 생성
+        # x = random.randint(0, 380)  # x 좌표 랜덤 생성
+        # y = 0
+        # bullet = canvas.create_rectangle(x, y, x + 20, y + 20, fill="red")  # 총알 생성
+        # bullets[bullet] = (0, 7.5)  # 총알의 이동 속도 설정
+        global x, y, width, height
+        x = random.randint(0, 400)  # x 좌표 랜덤 생성
         y = 0
-        bullet = canvas.create_rectangle(x, y, x + 20, y + 20, fill="red")  # 총알 생성
-        bullets[bullet] = (0, 7.5)  # 총알의 이동 속도 설정
+        width = 50  # 기둥 가로 길이 고정
+        height = 400  # 기둥 세로 길이 고정
+        bullet = canvas.create_rectangle(x, y, x + width, y + height, fill="white")  # 흰색 기둥 생성
+        root.after(1000, change_color, bullet)  # 1초 후에 색상 변경
+        check_collision(bullet)
+        root.after(1500, remove_obstacle, bullet)  # 1.5초 후에 기둥 삭제
+        # root.after(1500, shoot_bullet)  # 1.5초 후에 새로운 기둥 생성
+
+    def check_collision(bullet):
+        user_coords = canvas.coords(user)
+        bullet_coords = canvas.coords(bullet)
+        if user_coords[0] < bullet_coords[2] and user_coords[2] > bullet_coords[0] and user_coords[1] < bullet_coords[3] and user_coords[3] > bullet_coords[1]:
+            if canvas.itemcget(bullet, "fill") == "red":  # 사각형이 빨간색일 때만 게임 오버 처리
+                user_health.set(user_health.get() - 10)  # 유저 체력 감소
+                canvas.delete(bullet)  # 충돌한 총알 삭제
+                if user_health.get() <= 0:
+                    game_over()  # 게임 오버
+        else:
+            root.after(10, lambda: check_collision(bullet))  # 지연 후 충돌 확인
+    
+    def change_color(bullet):
+        canvas.itemconfig(bullet, fill="red")  # 기둥 색상 변경
+
+    def remove_obstacle(bullet):
+        canvas.delete(bullet)
 
     # 게임 오버 처리 함수
     def game_over():
@@ -77,7 +80,7 @@ def stage1():
             return
 
         shoot_bullet()  # 총알 발사
-        root.after(1200, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
+        root.after(1500, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
 
     # 몬스터의 턴 종료 처리 함수
     def end_monster_turn():
@@ -190,7 +193,6 @@ def stage1():
     button1 = Button(root, text="메인화면", command=open_main)
     button1.pack()
 
-
     remove_canvas()
 
     def load_image():
@@ -201,13 +203,11 @@ def stage1():
 
     load_image()  # 이미지 로드
 
-    root.after(1000, move_bullets)  # 1초 후에 move_bullets 함수 호출하여 총알 이동
-
     user_turn()  # Start the first turn
 
     root.mainloop()
 
 if __name__ == "__main__":
-    stage1()
+    stage2()
 
 # game2()
