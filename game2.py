@@ -54,8 +54,9 @@ def stage2():
     def damage_ (obstacle):
         if canvas.coords(user)[2] >= rx and canvas.coords(user)[0] <= (rx + rwidth) and canvas.coords(user)[3] >= ry and canvas.coords(user)[1] <= (ry + rheight) and canvas.itemcget(obstacle, "fill") == "red":
                     user_health.set(user_health.get() - 1)
-                    if user_health.get() <= 0:
+                    if user_health.get() == 0:
                        game_over()
+                      
 
     def remove_obstacle(obstacle):
         canvas.delete(obstacle)
@@ -67,7 +68,10 @@ def stage2():
         if monster_health.get() <= 0:
             canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
         else:
-            canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")  # 몬스터에게 패배한 경우
+            canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
+            button1 = Button(root, text="메인화면", command=open_main)
+            button1.pack()
+            #몬스터에게 패배한 경우
 
     # 몬스터의 턴 처리 함수
     def monster_turn():
@@ -92,14 +96,12 @@ def stage2():
 
     # 전투 UI 숨기기 함수
     def remove_battleUi():
-        surrender_button.pack_forget()
         attack_button.pack_forget()
         heal_button.pack_forget()
         
     def recover_battleUi():
         attack_button.pack()
         heal_button.pack()
-        surrender_button.pack()
 
     # 캔버스 숨기기 함수
     def remove_canvas():
@@ -128,16 +130,12 @@ def stage2():
                 user_health.set(100)
             monster_turn()  # 몬스터의 턴으로 넘어감
 
-    # 사용자의 항복 처리 함수
-    def user_surrender():
-        game_over()  # 게임 오버 처리
 
     # 사용자의 턴 처리 함수
     def user_turn():
         canvas.bind("<KeyPress>", on_key_press)
         attack_button.config(state=NORMAL)
         heal_button.config(state=NORMAL)
-        surrender_button.config(state=NORMAL)
 
     root = Tk()
     root.title("게임이다")
@@ -181,11 +179,7 @@ def stage2():
     heal_button = Button(root, text="Heal", command=user_heal, state=DISABLED)
     heal_button.pack()
 
-    surrender_button = Button(root, text="Surrender", command=user_surrender, state=DISABLED)
-    surrender_button.pack()
-
-    button1 = Button(root, text="메인화면", command=open_main)
-    button1.pack()
+    
 
 
     remove_canvas()
