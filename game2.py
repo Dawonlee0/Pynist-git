@@ -2,7 +2,7 @@ from tkinter import *
 import random
 import subprocess
 
-def stage1():
+def stage2():
     # main 파일 실행 함수
     def open_main():
         subprocess.Popen(["python", "main.py"])
@@ -203,4 +203,4 @@ def stage1():
     root.mainloop()
 
 if __name__ == "__main__":
-    stage1()
+    stage2()
