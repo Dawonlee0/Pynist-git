@@ -46,10 +46,6 @@ def stage2():
 
     def change_color(obstacle):
             canvas.itemconfig(obstacle, fill="red")  # 기둥 색상 변경
-            if canvas.coords(user)[2] >= rx and canvas.coords(user)[0] <= (rx + rwidth) and canvas.coords(user)[3] >= ry and canvas.coords(user)[1] <= (ry + rheight) and canvas.itemcget(obstacle, "fill") == "red":
-                    user_health.set(user_health.get() - 1)
-                    if user_health.get() <= 0:
-                       game_over()
 
     def damage_ (obstacle):
         if canvas.coords(user)[2] >= rx and canvas.coords(user)[0] <= (rx + rwidth) and canvas.coords(user)[3] >= ry and canvas.coords(user)[1] <= (ry + rheight) and canvas.itemcget(obstacle, "fill") == "red":
@@ -68,7 +64,9 @@ def stage2():
         if monster_health.get() <= 0:
             canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
         else:
-            canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
             button1 = Button(root, text="메인화면", command=open_main)
             button1.pack()
             #몬스터에게 패배한 경우
@@ -86,9 +84,15 @@ def stage2():
         remove_canvas()
 
     def count_obstacles(count):
+        if user_health.get() <= 0:
+            count = 11
         if count >= 10:
             end_monster_turn()
+            if count == 11:
+                remove_battleUi()
             return
+        
+            
 
         generate_obstacle()  
         root.after(2000, lambda: count_obstacles(count + 1))

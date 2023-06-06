@@ -35,7 +35,7 @@ def stage1():
             if bullet_coords[2] >= canvas.coords(user)[0] and bullet_coords[0] <= canvas.coords(user)[2] and bullet_coords[3] >= canvas.coords(user)[1] and bullet_coords[1] <= canvas.coords(user)[3]:
                 user_health.set(user_health.get() - 10)  # 사용자 체력 감소
                 bullets_to_remove.append(bullet)  # 충돌한 총알 추가
-                if user_health.get() <= 0:
+                if user_health.get() == 0:
                     game_over()  # 사용자 체력이 0 이하이면 게임 오버
 
             # 총알이 화면 밖으로 벗어나면 삭제
@@ -61,7 +61,9 @@ def stage1():
         if monster_health.get() <= 0:
             canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
         else:
-            canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
             button1 = Button(root, text="메인화면", command=open_main)
             button1.pack() # 몬스터에게 패배한 경우
 
@@ -74,9 +76,14 @@ def stage1():
 
     # 몬스터가 총알을 발사하는 함수
     def shoot_bullets(count):
+        if user_health.get() <= 0:
+            count = 16
         if count >= 15:  # 총알을 10개 발사하면 종료
             end_monster_turn()
+            if count == 16:
+                remove_battleUi()
             return
+        
 
         shoot_bullet()  # 총알 발사
         root.after(1200, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
@@ -135,7 +142,6 @@ def stage1():
         canvas.bind("<KeyPress>", on_key_press)
         attack_button.config(state=NORMAL)
         heal_button.config(state=NORMAL)
-        surrender_button.config(state=NORMAL)
 
     root = Tk()
     root.title("게임이다")
