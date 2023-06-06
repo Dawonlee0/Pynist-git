@@ -2,7 +2,6 @@ from tkinter import *
 from game1 import stage1
 from game2 import stage2
 from game3 import stage3
-import random
 
 # 메인 창 생성
 
@@ -30,9 +29,6 @@ def open_stage_window():
     stage_label = Label(stage_window, text="스테이지 선택", font=("Arial", 30))
     stage_label.pack()
 
-    def open_game1():
-        stage_window.destroy()  # 스테이지 선택 창 닫기
-        stage1() # stage1 함수 실행
 
     button1 = Button(stage_window, text="약초1", command=stage1)
     button1.pack(side="left", padx=30, pady=10)
