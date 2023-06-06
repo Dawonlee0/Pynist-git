@@ -1,6 +1,7 @@
 from tkinter import *
 from game1 import stage1
 from game2 import stage2
+from game3 import stage3
 import random
 
 # 메인 창 생성
@@ -14,8 +15,8 @@ main_window.title("게임")
 main_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
 # 제목 라벨 생성
-title_label = Label(main_window, text="게임", font=("Arial", 30))
-title_label.pack()
+# title_label = Label(main_window, text="게임", font=("Arial", 30)) # 이미지로 대체
+# title_label.pack()
 
 def open_stage_window():
     global stage_window
@@ -37,7 +38,7 @@ def open_stage_window():
     button1.pack(side="left", padx=30, pady=10)
     button2 = Button(stage_window, text="약초2", command=stage2)
     button2.pack(side="left", padx=30, pady=10)
-    button3 = Button(stage_window, text="약초3")
+    button3 = Button(stage_window, text="약초3", command=stage3)
     button3.pack(side="left", padx=30, pady=10)
     button4 = Button(stage_window, text="약초4")
     button4.pack(side="left", padx=30, pady=10)
@@ -113,5 +114,16 @@ desc_button.pack(side="bottom", padx=10, pady=10)
 story_button.pack(side="bottom", padx=10, pady=10)
 start_button.pack(side="bottom", padx=10, pady=10)
 
-main_window.mainloop()
+# 이미지를 표시할 Label 위젯 생성
+image_label = Label(main_window)
+image_label.pack()
 
+def load_image():
+    image = PhotoImage(file="main.png")  # 이미지 파일 경로에 맞게 수정
+    image = image.subsample(2)  # 이미지를 1/2로 축소
+    image_label.config(image=image)
+    image_label.image = image
+
+load_image()  # 이미지 로드
+
+main_window.mainloop()
