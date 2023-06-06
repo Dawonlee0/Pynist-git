@@ -1,6 +1,7 @@
 from tkinter import *
 from game1 import stage1
 from game2 import stage2
+from game3 import stage3
 import random
 
 # 메인 창 생성
@@ -37,7 +38,7 @@ def open_stage_window():
     button1.pack(side="left", padx=30, pady=10)
     button2 = Button(stage_window, text="약초2", command=stage2)
     button2.pack(side="left", padx=30, pady=10)
-    button3 = Button(stage_window, text="약초3")
+    button3 = Button(stage_window, text="약초3", command=stage3)
     button3.pack(side="left", padx=30, pady=10)
     button4 = Button(stage_window, text="약초4")
     button4.pack(side="left", padx=30, pady=10)

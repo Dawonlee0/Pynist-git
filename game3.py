@@ -2,12 +2,12 @@ from tkinter import *
 import random
 import subprocess
 
-def stage2():
+def stage3():
     # main 파일 실행 함수
     def open_main():
         subprocess.Popen(["python", "main.py"])
         root.destroy()  # Tkinter 창 닫기
-    
+
     # 사용자가 방향키를 입력받는 함수
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
@@ -24,85 +24,156 @@ def stage2():
     def monster_turn_active():
         return attack_button["state"] == DISABLED
 
-    def generate_obstacle():
-        global rx, ry, rwidth, rheight
-        rx = random.randint(0, 350)  # x 좌표 랜덤 생성
-        ry = 0
-        rwidth = 50  # 기둥 가로 길이 고정
-        rheight = 400  # 기둥 세로 길이 고정
-        obstacle = canvas.create_rectangle(rx, ry, rx + rwidth, ry + rheight, fill="white")  # 흰색 기둥 생성
-        root.after(1000, change_color, obstacle)# 1초 후에 색상 변경
-        root.after(1100, damage_, obstacle)
-        root.after(1200, damage_, obstacle)
-        root.after(1200, damage_, obstacle)
-        root.after(1300, damage_, obstacle)
-        root.after(1400, damage_, obstacle)
-        root.after(1500, damage_, obstacle)
-        root.after(1600, damage_, obstacle)
-        root.after(1700, damage_, obstacle)
-        root.after(1800, damage_, obstacle)
-        root.after(1900, damage_, obstacle)
-        root.after(2000, remove_obstacle, obstacle)  # 1.5초 후에 기둥 삭제
+    def create_wall():
+        global rx, ry, rwidth, rheight, wall
 
-    def change_color(obstacle):
-            canvas.itemconfig(obstacle, fill="red")  # 기둥 색상 변경
+        position = random.randint(1, 4)
+        if position == 1: #위쪽 벽 생성
+            rx = 0
+            ry = 0
+            rwidth = 400
+            rheight = -400
 
-    def damage_ (obstacle):
-        if canvas.coords(user)[2] >= rx and canvas.coords(user)[0] <= (rx + rwidth) and canvas.coords(user)[3] >= ry and canvas.coords(user)[1] <= (ry + rheight) and canvas.itemcget(obstacle, "fill") == "red":
-                    user_health.set(user_health.get() - 1)
-                    if user_health.get() == 0:
-                       game_over()
-                      
+        elif position == 2: #왼쪽 벽 생성
+            rx = 0
+            ry = 0
+            rwidth = -400
+            rheight = 400
 
-    def remove_obstacle(obstacle):
-        canvas.delete(obstacle)
+        elif position == 3: #아래쪽 벽 생성
+            rx = 0
+            ry = 405
+            rwidth = 400
+            rheight = 400
 
+        elif position == 4: #오른쪽 벽 생성
+            rx = 405
+            ry = 0
+            rwidth = 400
+            rheight = 400
+        wall = canvas.create_rectangle(rx, ry, rx + rwidth, ry + rheight, fill="red")
+
+        move_wall(position)
+        
+
+    def move_wall(position):
+
+        for repetition in range(1000, 2499, 100):
+            root.after(repetition, move1, position)
+            
+
+        for repetition in range(2500, 3999, 100):
+            root.after(repetition, move2, position)
+            
+
+
+    def move1(position):
+        global wall_coords, wall
+
+        if position == 1:
+            canvas.move(wall, 0, 20)
+            damage_()
+
+        elif position == 2:
+            canvas.move(wall, 20, 0)
+            damage_()
+
+        elif position == 3:
+            canvas.move(wall, 0, -20)
+            damage_()
+
+        elif position == 4:
+            canvas.move(wall, -20, 0)
+            damage_()
+
+        wall_coords = canvas.coords(wall)
+        
+
+    def move2(position):
+        global wall_coords, wall
+
+        if position == 1:
+            canvas.move(wall, 0, -20)
+            damage_()
+
+        elif position == 2:
+            canvas.move(wall, -20, 0)
+            damage_()
+
+        elif position == 3:
+            canvas.move(wall, 0, 20)
+            damage_()
+
+        elif position == 4:
+            canvas.move(wall, 20, 0)
+            damage_()
+
+        
+
+        
+
+    def damage_():
+        rxm = canvas.coords(wall)[0]
+        rym = canvas.coords(wall)[1]
+        rxwm = canvas.coords(wall)[2]
+        ryhm = canvas.coords(wall)[3]
+        if canvas.coords(user)[2] >= rxm and canvas.coords(user)[0] <= rxwm and canvas.coords(user)[3] >= rym and canvas.coords(user)[1] <= ryhm:
+            user_health.set(user_health.get() - 1)
+            if user_health.get() <= 0:
+                game_over()
+
+    def remove_wall(wall):
+        canvas.delete(wall)
 
     # 게임 오버 처리 함수
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
-            canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
+            button1 = Button(root, text="메인화면", command=open_main)
+            button1.pack()
         else:
             canvase = Canvas(root, width=400, height=400)
             canvase.pack()
             canvase.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
             button1 = Button(root, text="메인화면", command=open_main)
             button1.pack()
-            #몬스터에게 패배한 경우
+
 
     # 몬스터의 턴 처리 함수
     def monster_turn():
         recover_canvas()
         remove_battleUi()
         # canvas.bind("<KeyPress>", on_key_press)
-        count_obstacles(0)  # 총알 여러 개 발사
+        count_walls(0)
 
     # 몬스터의 턴 종료 처리 함수
     def end_monster_turn():
         recover_battleUi()
         remove_canvas()
+        remove_wall(wall)
 
-    def count_obstacles(count):
+    def count_walls(count):
         if user_health.get() <= 0:
-            count = 11
-        if count >= 10:
+            count = 5
+        if count >= 4:
             end_monster_turn()
-            if count == 11:
+            if count == 5:
                 remove_battleUi()
             return
         
             
 
-        generate_obstacle()  
-        root.after(2000, lambda: count_obstacles(count + 1))
-
+        create_wall()
+        root.after(4500, lambda: count_walls(count + 1))
 
     # 전투 UI 숨기기 함수
     def remove_battleUi():
         attack_button.pack_forget()
         heal_button.pack_forget()
-        
+
     def recover_battleUi():
         attack_button.pack()
         heal_button.pack()
@@ -117,7 +188,7 @@ def stage2():
 
     # 사용자의 공격 처리 함수
     def user_attack():
-        monster_health.set(monster_health.get() - 20)  # 몬스터 체력 감소
+        monster_health.set(monster_health.get() - 90)  # 몬스터 체력 감소
         if monster_health.get() <= 0:
             game_over()  # 몬스터 체력이 0 이하이면 게임 오버
         else:
@@ -183,9 +254,6 @@ def stage2():
     heal_button = Button(root, text="Heal", command=user_heal, state=DISABLED)
     heal_button.pack()
 
-    
-
-
     remove_canvas()
 
     def load_image():
@@ -200,5 +268,6 @@ def stage2():
 
     root.mainloop()
 
+
 if __name__ == "__main__":
-    stage2()
+    stage3()

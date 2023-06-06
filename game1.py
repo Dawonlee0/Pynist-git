@@ -59,7 +59,11 @@ def stage1():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
-            canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
+            button1 = Button(root, text="메인화면", command=open_main)
+            button1.pack()  # 몬스터를 처치한 경우
         else:
             canvase = Canvas(root, width=400, height=400)
             canvase.pack()
