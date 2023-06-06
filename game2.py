@@ -26,7 +26,7 @@ def stage2():
 
     def generate_obstacle():
         global rx, ry, rwidth, rheight
-        rx = random.randint(0, 400)  # x 좌표 랜덤 생성
+        rx = random.randint(0, 350)  # x 좌표 랜덤 생성
         ry = 0
         rwidth = 50  # 기둥 가로 길이 고정
         rheight = 400  # 기둥 세로 길이 고정
@@ -44,15 +44,35 @@ def stage2():
         root.after(1900, damage_, obstacle)
         root.after(2000, remove_obstacle, obstacle)  # 1.5초 후에 기둥 삭제
 
+    def generate_obstacle1():
+        global rx1, ry1
+        rx1 = random.randint(0, 350)  # x 좌표 랜덤 생성
+        ry1 = 0
+        obstacle = canvas.create_rectangle(rx1, ry1, rx1 + rwidth, ry1 + rheight, fill="white")  # 흰색 기둥 생성
+        root.after(1000, change_color, obstacle)# 1초 후에 색상 변경
+        root.after(1100, damage_1, obstacle)
+        root.after(1200, damage_1, obstacle)
+        root.after(1200, damage_1, obstacle)
+        root.after(1300, damage_1, obstacle)
+        root.after(1400, damage_1, obstacle)
+        root.after(1500, damage_1, obstacle)
+        root.after(1600, damage_1, obstacle)
+        root.after(1700, damage_1, obstacle)
+        root.after(1800, damage_1, obstacle)
+        root.after(1900, damage_1, obstacle)
+        root.after(2000, remove_obstacle, obstacle)
+
     def change_color(obstacle):
             canvas.itemconfig(obstacle, fill="red")  # 기둥 색상 변경
-            if canvas.coords(user)[2] >= rx and canvas.coords(user)[0] <= (rx + rwidth) and canvas.coords(user)[3] >= ry and canvas.coords(user)[1] <= (ry + rheight) and canvas.itemcget(obstacle, "fill") == "red":
-                    user_health.set(user_health.get() - 1)
-                    if user_health.get() <= 0:
-                       game_over()
 
     def damage_ (obstacle):
         if canvas.coords(user)[2] >= rx and canvas.coords(user)[0] <= (rx + rwidth) and canvas.coords(user)[3] >= ry and canvas.coords(user)[1] <= (ry + rheight) and canvas.itemcget(obstacle, "fill") == "red":
+                    user_health.set(user_health.get() - 1)
+                    if user_health.get() == 0:
+                       game_over()
+
+    def damage_1 (obstacle):
+        if canvas.coords(user)[2] >= rx1 and canvas.coords(user)[0] <= (rx1 + rwidth) and canvas.coords(user)[3] >= ry1 and canvas.coords(user)[1] <= (ry1 + rheight) and canvas.itemcget(obstacle, "fill") == "red":
                     user_health.set(user_health.get() - 1)
                     if user_health.get() == 0:
                        game_over()
@@ -66,9 +86,15 @@ def stage2():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
-            canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
+            button1 = Button(root, text="메인화면", command=open_main)
+            button1.pack()  # 몬스터를 처치한 경우
         else:
-            canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
             button1 = Button(root, text="메인화면", command=open_main)
             button1.pack()
             #몬스터에게 패배한 경우
@@ -86,11 +112,17 @@ def stage2():
         remove_canvas()
 
     def count_obstacles(count):
+        if user_health.get() <= 0:
+            count = 11
         if count >= 10:
             end_monster_turn()
+            if count == 11:
+                remove_battleUi()
             return
-
-        generate_obstacle()  
+        
+            
+        generate_obstacle()
+        generate_obstacle1()  
         root.after(2000, lambda: count_obstacles(count + 1))
 
 
