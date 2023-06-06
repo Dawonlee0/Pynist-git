@@ -64,10 +64,9 @@ def open_story_window():
     story_label.pack()
 
     # 스토리 설명 텍스트 입력 공간 생성
-    story_text = Text(story_window, width=50, height=10)
+    story_text = Text(story_window, width=50, height=10, font=("Arial", 25))
     story_text.pack(pady=10)
-    story_text.insert("3.0", "어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.")  # 초기 내용 입력
-    
+    story_text.insert("3.0", "1.어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.\n\n2.세계수를 구하기 위해선 약이 필요했고 약을 만들기 위한 재료는 위험한 몬스터들이 가지고 있다\n\n3.그러다 용감한 모험가들이 나타나 세계 곳곳에 약초를 구하기 위해 모험을 떠나게 되는데...")  # 초기 내용 입력    
     def back_to_main():
         # 이전으로 돌아가기
         story_window.destroy()  # 스토리 설명 창 닫기
@@ -89,10 +88,9 @@ def open_desc_window():
     desc_label.pack()
 
     # 게임 설명 텍스트 입력 공간 생성
-    desc_text = Text(desc_window, width=50, height=10)
+    desc_text = Text(desc_window, width=50, height=10, font=("Arial", 25))
     desc_text.pack(pady=10)
-    desc_text.insert("1.0", "게임에 대한 설명을 입력하세요.")  # 초기 내용 입력
-    
+    desc_text.insert("1.0", "1. 몬스터 턴 : 각종 미니 게임으로 플레이어를 공격! 플레이어는 방향키로 몬스터를 공격한다.\n\n2. 플레이어 턴 공격,힐 버튼으로 몬스터를 공격 또는 체력을 회복한다 \n\n3. 턴제 게임으로 둘 중 한명이 0이 되면 게임은 종료 된다.")  # 초기 내용 입력    
     # 이전으로 돌아가기
     def back_to_main():
         desc_window.destroy()  # 게임 설명 창 닫기
