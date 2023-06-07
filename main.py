@@ -15,8 +15,8 @@ main_window.title("게임")
 main_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
 # 제목 라벨 생성
-title_label = Label(main_window, text="게임", font=("Arial", 30))
-title_label.pack()
+# title_label = Label(main_window, text="게임", font=("Arial", 30))
+# title_label.pack()
 
 def open_stage_window():
     global stage_window
