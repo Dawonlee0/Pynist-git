@@ -12,13 +12,17 @@ def stage2():
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
         if event.keysym == "Up" and not monster_turn_active():
-            canvas.move(user, 0, -10)
+            if canvas.coords(user)[1] > 0:
+                canvas.move(user, 0, -10)
         elif event.keysym == "Down" and not monster_turn_active():
-            canvas.move(user, 0, 10)
+            if canvas.coords(user)[3] < 400:
+                canvas.move(user, 0, 10)
         elif event.keysym == "Left" and not monster_turn_active():
-            canvas.move(user, -10, 0)
+            if canvas.coords(user)[0] > 0:
+                canvas.move(user, -10, 0)
         elif event.keysym == "Right" and not monster_turn_active():
-            canvas.move(user, 10, 0)
+            if canvas.coords(user)[2] < 400:
+                canvas.move(user, 10, 0)
 
     # 몬스터의 턴 여부를 확인하는 함수
     def monster_turn_active():
@@ -86,6 +90,7 @@ def stage2():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
+            remove_battleUi()
             canvase = Canvas(root, width=400, height=400)
             canvase.pack()
             canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
@@ -185,7 +190,7 @@ def stage2():
     canvas.bind("<KeyPress>", on_key_press)
     canvas.focus_set()
 
-    user = canvas.create_rectangle(185, 355, 215, 385, fill="blue")
+    user = canvas.create_rectangle(185, 185, 215, 215, fill="blue")
 
     monster_health = IntVar(root)
     monster_health.set(100)
@@ -217,8 +222,8 @@ def stage2():
     remove_canvas()
 
     def load_image():
-        image = PhotoImage(file="1.png", master=root)  # 이미지 파일 경로에 맞게 수정
-        image = image.subsample(4)  # 이미지를 1/2로 축소
+        image = PhotoImage(file="m2.png", master=root)  # 이미지 파일 경로에 맞게 수정
+        image = image.subsample(6,6)  # 이미지를 1/2로 축소
         image_label.config(image=image)
         image_label.image = image
 

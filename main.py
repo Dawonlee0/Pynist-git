@@ -2,7 +2,7 @@ from tkinter import *
 from game1 import stage1
 from game2 import stage2
 from game3 import stage3
-import random
+from game4 import stage4
 
 # 메인 창 생성
 
@@ -15,8 +15,8 @@ main_window.title("게임")
 main_window.geometry('%dx%d+%d+%d' % (800, 450, x, y))
 
 # 제목 라벨 생성
-# title_label = Label(main_window, text="게임", font=("Arial", 30)) # 이미지로 대체
-# title_label.pack()
+title_label = Label(main_window, text="게임", font=("Arial", 30))
+title_label.pack()
 
 def open_stage_window():
     global stage_window
@@ -30,9 +30,6 @@ def open_stage_window():
     stage_label = Label(stage_window, text="스테이지 선택", font=("Arial", 30))
     stage_label.pack()
 
-    def open_game1():
-        stage_window.destroy()  # 스테이지 선택 창 닫기
-        stage1() # stage1 함수 실행
 
     button1 = Button(stage_window, text="약초1", command=stage1)
     button1.pack(side="left", padx=30, pady=10)
@@ -40,7 +37,7 @@ def open_stage_window():
     button2.pack(side="left", padx=30, pady=10)
     button3 = Button(stage_window, text="약초3", command=stage3)
     button3.pack(side="left", padx=30, pady=10)
-    button4 = Button(stage_window, text="약초4")
+    button4 = Button(stage_window, text="약초4", command=stage4)
     button4.pack(side="left", padx=30, pady=10)
     
     def back_to_main():
@@ -64,9 +61,10 @@ def open_story_window():
     story_label.pack()
 
     # 스토리 설명 텍스트 입력 공간 생성
-    story_text = Text(story_window, width=50, height=10, font=("Arial", 25))
+    story_text = Text(story_window, width=50, height=10)
     story_text.pack(pady=10)
-    story_text.insert("3.0", "1.어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.\n\n2.세계수를 구하기 위해선 약이 필요했고 약을 만들기 위한 재료는 위험한 몬스터들이 가지고 있다\n\n3.그러다 용감한 모험가들이 나타나 세계 곳곳에 약초를 구하기 위해 모험을 떠나게 되는데...")  # 초기 내용 입력    
+    story_text.insert("3.0", "어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.\n주인공은 우연히 특정 약초들을 모아서 약을 만들면 세계수를 치료할 수 있다는 소식을 들었지만 재료가 되는 약초들도 어둠의 힘에 의해서 공격성을 가진\n몬스터가 되어버렸는데...\n주인공은 위험을 무릅쓰고 세계수를 치료해 마을을\n구하기 위해 몬스터가 된 약초를 제압하고 재료를\n수집하기 위해서 떠난다")  # 초기 내용 입력
+    
     def back_to_main():
         # 이전으로 돌아가기
         story_window.destroy()  # 스토리 설명 창 닫기
@@ -88,9 +86,10 @@ def open_desc_window():
     desc_label.pack()
 
     # 게임 설명 텍스트 입력 공간 생성
-    desc_text = Text(desc_window, width=50, height=10, font=("Arial", 25))
+    desc_text = Text(desc_window, width=50, height=10)
     desc_text.pack(pady=10)
-    desc_text.insert("1.0", "1. 몬스터 턴 : 각종 미니 게임으로 플레이어를 공격! 플레이어는 방향키로 몬스터를 공격한다.\n\n2. 플레이어 턴 공격,힐 버튼으로 몬스터를 공격 또는 체력을 회복한다 \n\n3. 턴제 게임으로 둘 중 한명이 0이 되면 게임은 종료 된다.")  # 초기 내용 입력    
+    desc_text.insert("1.0", "attack - 몬스터를 공격해 피해를 줍니다.\nheal - 플레이어가 체력을 회복합니다.\n방향키 - 이동\n몬스터의 턴에 공격을 피하지 못하면 플레이어가 피해를 입습니다.")  # 초기 내용 입력
+    
     # 이전으로 돌아가기
     def back_to_main():
         desc_window.destroy()  # 게임 설명 창 닫기
@@ -112,16 +111,5 @@ desc_button.pack(side="bottom", padx=10, pady=10)
 story_button.pack(side="bottom", padx=10, pady=10)
 start_button.pack(side="bottom", padx=10, pady=10)
 
-# 이미지를 표시할 Label 위젯 생성
-image_label = Label(main_window)
-image_label.pack()
-
-def load_image():
-    image = PhotoImage(file="main.png")  # 이미지 파일 경로에 맞게 수정
-    image = image.subsample(2)  # 이미지를 1/2로 축소
-    image_label.config(image=image)
-    image_label.image = image
-
-load_image()  # 이미지 로드
-
 main_window.mainloop()
+

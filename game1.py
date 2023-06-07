@@ -12,13 +12,17 @@ def stage1():
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
         if event.keysym == "Up" and not monster_turn_active():
-            canvas.move(user, 0, -10)
+            if canvas.coords(user)[1] > 0:
+                canvas.move(user, 0, -10)
         elif event.keysym == "Down" and not monster_turn_active():
-            canvas.move(user, 0, 10)
+            if canvas.coords(user)[3] < 400:
+                canvas.move(user, 0, 10)
         elif event.keysym == "Left" and not monster_turn_active():
-            canvas.move(user, -10, 0)
+            if canvas.coords(user)[0] > 0:
+                canvas.move(user, -10, 0)
         elif event.keysym == "Right" and not monster_turn_active():
-            canvas.move(user, 10, 0)
+            if canvas.coords(user)[2] < 400:
+                canvas.move(user, 10, 0)
 
     # 몬스터의 턴 여부를 확인하는 함수
     def monster_turn_active():
@@ -35,7 +39,7 @@ def stage1():
             if bullet_coords[2] >= canvas.coords(user)[0] and bullet_coords[0] <= canvas.coords(user)[2] and bullet_coords[3] >= canvas.coords(user)[1] and bullet_coords[1] <= canvas.coords(user)[3]:
                 user_health.set(user_health.get() - 10)  # 사용자 체력 감소
                 bullets_to_remove.append(bullet)  # 충돌한 총알 추가
-                if user_health.get() <= 0:
+                if user_health.get() == 0:
                     game_over()  # 사용자 체력이 0 이하이면 게임 오버
 
             # 총알이 화면 밖으로 벗어나면 삭제
@@ -59,9 +63,16 @@ def stage1():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
-            canvas.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
+            remove_battleUi()
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
+            button1 = Button(root, text="메인화면", command=open_main)
+            button1.pack()  # 몬스터를 처치한 경우
         else:
-            canvas.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
+            canvase = Canvas(root, width=400, height=400)
+            canvase.pack()
+            canvase.create_text(200, 200, text="Game Over", font=("Arial", 24), fill="red")
             button1 = Button(root, text="메인화면", command=open_main)
             button1.pack() # 몬스터에게 패배한 경우
 
@@ -74,9 +85,14 @@ def stage1():
 
     # 몬스터가 총알을 발사하는 함수
     def shoot_bullets(count):
+        if user_health.get() <= 0:
+            count = 16
         if count >= 15:  # 총알을 10개 발사하면 종료
             end_monster_turn()
+            if count == 16:
+                remove_battleUi()
             return
+        
 
         shoot_bullet()  # 총알 발사
         root.after(1200, lambda: shoot_bullets(count + 1))  # 2초 간격으로 총알 발사
@@ -110,6 +126,7 @@ def stage1():
     def recover_canvas():
         canvas.pack()
 
+
     # 사용자의 공격 처리 함수
     def user_attack():
         monster_health.set(monster_health.get() - 20)  # 몬스터 체력 감소
@@ -135,7 +152,6 @@ def stage1():
         canvas.bind("<KeyPress>", on_key_press)
         attack_button.config(state=NORMAL)
         heal_button.config(state=NORMAL)
-        # surrender_button.config(state=NORMAL)
 
     root = Tk()
     root.title("게임이다")
@@ -153,7 +169,7 @@ def stage1():
     canvas.bind("<KeyPress>", on_key_press)
     canvas.focus_set()
 
-    user = canvas.create_rectangle(185, 355, 215, 385, fill="blue")
+    user = canvas.create_rectangle(185, 185, 215, 215, fill="blue")
 
     bullets = {}
 
@@ -188,8 +204,8 @@ def stage1():
     remove_canvas()
 
     def load_image():
-        image = PhotoImage(file="1.png", master=root)  # 이미지 파일 경로에 맞게 수정
-        image = image.subsample(4)  # 이미지를 1/2로 축소
+        image = PhotoImage(file="m1.png", master=root)  # 이미지 파일 경로에 맞게 수정
+        image = image.subsample(6,6) # 이미지를 1/2로 축소
         image_label.config(image=image)
         image_label.image = image
 
@@ -202,6 +218,4 @@ def stage1():
     root.mainloop()
 
 if __name__ == "__main__":
-    stage1()
-
-# game2()
+   stage1()
