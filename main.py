@@ -61,7 +61,7 @@ def open_story_window():
     story_label.pack()
 
     # 스토리 설명 텍스트 입력 공간 생성
-    story_text = Text(story_window, width=50, height=10)
+    story_text = Text(story_window, width=50, height=10, font=("Arial", 25))
     story_text.pack(pady=10)
     story_text.insert("3.0", "어느 마을을 지켜주는 세계수가 어둠의 힘에 의해 병에 걸리게 되었다.\n주인공은 우연히 특정 약초들을 모아서 약을 만들면 세계수를 치료할 수 있다는 소식을 들었지만 재료가 되는 약초들도 어둠의 힘에 의해서 공격성을 가진\n몬스터가 되어버렸는데...\n주인공은 위험을 무릅쓰고 세계수를 치료해 마을을\n구하기 위해 몬스터가 된 약초를 제압하고 재료를\n수집하기 위해서 떠난다")  # 초기 내용 입력
     
@@ -86,7 +86,7 @@ def open_desc_window():
     desc_label.pack()
 
     # 게임 설명 텍스트 입력 공간 생성
-    desc_text = Text(desc_window, width=50, height=10)
+    desc_text = Text(desc_window, width=50, height=10, font=("Arial", 25))
     desc_text.pack(pady=10)
     desc_text.insert("1.0", "attack - 몬스터를 공격해 피해를 줍니다.\nheal - 플레이어가 체력을 회복합니다.\n방향키 - 이동\n몬스터의 턴에 공격을 피하지 못하면 플레이어가 피해를 입습니다.")  # 초기 내용 입력
     
