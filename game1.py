@@ -128,7 +128,7 @@ def stage1():
 
     # 사용자의 공격 처리 함수
     def user_attack():
-        monster_health.set(monster_health.get() - 100)  # 몬스터 체력 감소
+        monster_health.set(monster_health.get() - 20)  # 몬스터 체력 감소
         if monster_health.get() <= 0:
             game_over()  # 몬스터 체력이 0 이하이면 게임 오버
         else:
