@@ -263,7 +263,7 @@ def stage4():
     remove_canvas()
 
     def load_image():
-        image = PhotoImage(file="m1.png", master=root)  # 이미지 파일 경로에 맞게 수정
+        image = PhotoImage(file="m4.png", master=root)  # 이미지 파일 경로에 맞게 수정
         image = image.subsample(6, 6)  # 이미지를 1/2로 축소
         image_label.config(image=image)
         image_label.image = image
