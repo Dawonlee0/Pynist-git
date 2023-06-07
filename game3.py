@@ -12,13 +12,17 @@ def stage3():
     def on_key_press(event):
         # 몬스터의 턴이 아닐 때에만 사용자 이동 가능
         if event.keysym == "Up" and not monster_turn_active():
-            canvas.move(user, 0, -10)
+            if canvas.coords(user)[1] > 0:
+                canvas.move(user, 0, -10)
         elif event.keysym == "Down" and not monster_turn_active():
-            canvas.move(user, 0, 10)
+            if canvas.coords(user)[3] < 400:
+                canvas.move(user, 0, 10)
         elif event.keysym == "Left" and not monster_turn_active():
-            canvas.move(user, -10, 0)
+            if canvas.coords(user)[0] > 0:
+                canvas.move(user, -10, 0)
         elif event.keysym == "Right" and not monster_turn_active():
-            canvas.move(user, 10, 0)
+            if canvas.coords(user)[2] < 400:
+                canvas.move(user, 10, 0)
 
     # 몬스터의 턴 여부를 확인하는 함수
     def monster_turn_active():
@@ -129,6 +133,7 @@ def stage3():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
+            remove_battleUi()
             canvase = Canvas(root, width=400, height=400)
             canvase.pack()
             canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우
@@ -188,7 +193,7 @@ def stage3():
 
     # 사용자의 공격 처리 함수
     def user_attack():
-        monster_health.set(monster_health.get() - 90)  # 몬스터 체력 감소
+        monster_health.set(monster_health.get() - 20)  # 몬스터 체력 감소
         if monster_health.get() <= 0:
             game_over()  # 몬스터 체력이 0 이하이면 게임 오버
         else:
@@ -257,8 +262,8 @@ def stage3():
     remove_canvas()
 
     def load_image():
-        image = PhotoImage(file="1.png", master=root)  # 이미지 파일 경로에 맞게 수정
-        image = image.subsample(4)  # 이미지를 1/2로 축소
+        image = PhotoImage(file="m3.png", master=root)  # 이미지 파일 경로에 맞게 수정
+        image = image.subsample(6,6)  # 이미지를 1/2로 축소
         image_label.config(image=image)
         image_label.image = image
 
