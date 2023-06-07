@@ -109,9 +109,9 @@ def ending():
     ending_label = Label(ending_window, text="Ending", font=("Arial", 30))
     ending_label.pack()
 
-    ending_text = Text(ending_window, width=50, height=10)
+    ending_text = Text(ending_window, width=60, height=10)
     ending_text.pack(pady=10)
-    ending_text.insert("1.0","주인공은 모은 재료로 약을 만들어 세계수를 치료했다. 마을은 원래의 모습을 되찾았고 세계수의 보호아래서 오랫동안 평화로움을 유지했다.")
+    ending_text.insert("1.0","주인공은 모은 재료로 약을 만들어 세계수를 치료했다.\n마을은 원래의 모습을 되찾았고 세계수의 보호아래서\n오랫동안 평화로움을 유지했다.")
 
 # 버튼 생성
 start_button = Button(main_window, text="게임 시작", command=open_stage_window)
