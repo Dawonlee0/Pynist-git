@@ -105,6 +105,17 @@ story_button = Button(main_window, text="스토리 설명", command=open_story_w
 desc_button = Button(main_window, text="게임 설명", command=open_desc_window)
 quit_button = Button(main_window, text="끝내기", command=main_window.destroy)
 
+# 이미지를 표시할 Label 위젯 생성
+image_label = Label(main_window)
+image_label.pack()
+
+def load_image():
+    image = PhotoImage(file="main.png")  # 이미지 파일 경로에 맞게 수정
+    image = image.subsample(2)  # 이미지를 1/2로 축소
+    image_label.config(image=image)
+    image_label.image = image
+
+load_image()  # 이미지 로드
 # 버튼 일자로 배치
 quit_button.pack(side="bottom", padx=10, pady=10)
 desc_button.pack(side="bottom", padx=10, pady=10)
