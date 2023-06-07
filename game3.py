@@ -133,6 +133,7 @@ def stage3():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
+            remove_battleUi()
             canvase = Canvas(root, width=400, height=400)
             canvase.pack()
             canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")  # 몬스터를 처치한 경우

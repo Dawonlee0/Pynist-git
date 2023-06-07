@@ -63,6 +63,7 @@ def stage1():
     def game_over():
         canvas.unbind("<KeyPress>")  # 키 입력 이벤트 언바인딩
         if monster_health.get() <= 0:
+            remove_battleUi()
             canvase = Canvas(root, width=400, height=400)
             canvase.pack()
             canvase.create_text(200, 200, text="Win", font=("Arial", 24), fill="green")
@@ -127,7 +128,7 @@ def stage1():
 
     # 사용자의 공격 처리 함수
     def user_attack():
-        monster_health.set(monster_health.get() - 20)  # 몬스터 체력 감소
+        monster_health.set(monster_health.get() - 100)  # 몬스터 체력 감소
         if monster_health.get() <= 0:
             game_over()  # 몬스터 체력이 0 이하이면 게임 오버
         else:
